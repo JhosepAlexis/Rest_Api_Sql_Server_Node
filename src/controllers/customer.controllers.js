@@ -47,8 +47,8 @@ export const createCustomer = async (req, res) => {
     .input("TercerosCupoCredito", sql.Money, req.body.TercerosCupoCredito)
     .input("TercerosDiasCredito", sql.Numeric, req.body.TercerosDiasCredito)
     .input("TipoNegocioID", sql.Numeric, req.body.TipoNegocioID)
-    .input("Latitud", sql.Numeric, req.body.Latitud)
-    .input("Longitud", sql.Numeric, req.body.Longitud)
+    .input("Latitud", sql.Float, req.body.Latitud)
+    .input("Longitud", sql.Float, req.body.Longitud)
     .query(
       "INSERT INTO AdmTerceros (TercerosTipoDoc,TercerosIdentificacion,TercerosDv,TercerosPrimerNombre,TercerosSegundoNombre,TercerosPrimerApellido,TercerosSegundoApellido,TercerosRazonSocial,TercerosNombres,CiudadID,TercerosTeleFax,TercerosCelular,TercerosDireccion,TercerosEmail,TercerosCliente,TercerosProveedor,TercerosEntidadOficial,TercerosEmpleado,TercerosActivosFijos,TercerosFechaIngreso,TercerosReteFuente,TercerosReteIca,TercerosBaseReteFuente,TercerosBaseReteIca,TercerosReteIva,TercerosBaseReteIva,TercerosSimplificado,TercerosContadoCredito,TercerosEstablecimiento,TercerosCupoCredito,TercerosDiasCredito,TercerosCarteraVencida,TercerosEmpleadoActivo,TercerosEmpleadoRetirado,TercerosDireccionAlterna,TercerosCodigoAlterno,TercerosRepresentanteLegal,TercerosLibretaMilitar,TercerosClaseLibreta,TercerosTipoCuenta,TercerosNumeroCuenta,TercerosSueldoBasico,TercerosAuxilioTransporte,TercerosObservaciones, TipoNegocioID, Latitud, Longitud) VALUES(@TercerosTipoDoc,@TercerosIdentificacion,@TercerosDv,@TercerosPrimerNombre,@TercerosSegundoNombre,@TercerosPrimerApellido,@TercerosSegundoApellido,@TercerosRazonSocial,@TercerosNombres,@CiudadID,@TercerosTeleFax,@TercerosCelular,@TercerosDireccion,@TercerosEmail,1,0,0,0,0,@TercerosFechaIngreso,0,0,0,0,0,0,0,@TercerosContadoCredito,@TercerosEstablecimiento,@TercerosCupoCredito,@TercerosDiasCredito,1,0,0,'','','','',0,0,'',0,0,'', @TipoNegocioID, @Latitud, @Longitud); SELECT SCOPE_IDENTITY() AS TercerosID;"
     );
