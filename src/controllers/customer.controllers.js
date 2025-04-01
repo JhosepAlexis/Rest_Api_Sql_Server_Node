@@ -7,28 +7,18 @@ export const getCustomers = async (req, res) => {
   res.json(result.recordset);
 };
 
-export const getCustomer = async (req, res) => {
-  const { documento } = req.query;
-
-  if (!documento) {
-    return res.status(400).json({ message: 'Documento es requerido' });
-  } 
-
-  try {
-    const pool = await getConnection();
-    const result = await pool
-      .request()
-      .input("TercerosIdentificacion", sql.NVarChar, documento)
-      .query("SELECT * FROM AdmTerceros WHERE TercerosIdentificacion=@TercerosIdentificacion");
-
-    if (result.recordset.length > 0) {
-      res.json(result.recordset[0]);
-    } else {
-      res.status(404).json({ message: 'Cliente no encontrado' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+export const getCustomerByIdentification = async (req, res) => {
+  const { cedula } = req.params;
+  const pool = await getConnection();
+  const result = await pool
+    .request()
+    .input("cedula", sql.NVarChar, cedula)
+    .query(`
+      SELECT * FROM AdmTerceros 
+      WHERE TercerosIdentificacion = @cedula
+    `);
+    
+  res.json(result.recordset[0] || {});
 };
 
 export const createCustomer = async (req, res) => {

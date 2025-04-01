@@ -3,7 +3,7 @@ import {
   createCustomer,
   deleteCustomer,
   getCustomers,
-  getCustomer,
+  getCustomerByIdentification,
   updateCustomer,
 } from "../controllers/customer.controllers.js";
 
@@ -11,7 +11,7 @@ const router = Router();
 
 router.get("/clientes", getCustomers);
 
-router.get("/clientes/buscar", getCustomer);
+router.get("/clientes/:cedula", getCustomerByIdentification);
 
 router.post("/clientes", createCustomer);
 
