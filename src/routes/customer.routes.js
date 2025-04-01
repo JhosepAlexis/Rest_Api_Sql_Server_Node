@@ -11,7 +11,7 @@ const router = Router();
 
 router.get("/clientes", getCustomers);
 
-router.get("/clientes/:TercerosID", getCustomer);
+router.get("/clientes/:TercerosIdentificacion", getCustomer);
 
 router.post("/clientes", createCustomer);
 
