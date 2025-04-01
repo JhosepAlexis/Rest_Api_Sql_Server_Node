@@ -18,7 +18,7 @@ export const getCustomer = async (req, res) => {
     const pool = await getConnection();
     const result = await pool
       .request()
-      .input("TercerosIdentificacion", sql.NVarChar, req.params.documento)
+      .input("TercerosIdentificacion", sql.NVarChar, documento)
       .query("SELECT * FROM AdmTerceros WHERE TercerosIdentificacion=@TercerosIdentificacion");
 
     if (result.recordset.length > 0) {
