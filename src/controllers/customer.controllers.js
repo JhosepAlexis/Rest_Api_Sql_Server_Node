@@ -3,7 +3,7 @@ import sql from "mssql";
 
 export const getCustomers = async (req, res) => {
   const pool = await getConnection();
-  const result = await pool.request().query("SELECT TOP 2 * FROM AdmTerceros");
+  const result = await pool.request().query("SELECT * FROM AdmTerceros");
   res.json(result.recordset);
 };
 
@@ -65,27 +65,30 @@ export const updateCustomer = async (req, res) => {
     const pool = await getConnection()
     const result = await pool
     .request()
-    .input("TercerosTipoDoc", sql.Numeric, req.body.TercerosTipoDoc)
-    .input("TercerosIdentificacion", sql.NVarChar, req.body.TercerosIdentificacion)
-    .input("TercerosDv", sql.Char, req.body.TercerosDv)
-    .input("TercerosPrimerNombre", sql.NVarChar, req.body.TercerosPrimerNombre)
-    .input("TercerosSegundoNombre", sql.NVarChar, req.body.TercerosSegundoNombre)
-    .input("TercerosPrimerApellido", sql.NVarChar, req.body.TercerosPrimerApellido)
-    .input("TercerosSegundoApellido", sql.NVarChar, req.body.TercerosSegundoApellido)
-    .input("TercerosRazonSocial", sql.NVarChar, req.body.TercerosRazonSocial)
-    .input("TercerosNombres", sql.NVarChar, req.body.TercerosNombres)
-    .input("CiudadID", sql.Int, req.body.CiudadID)
-    .input("TercerosTeleFax", sql.NVarChar, req.body.TercerosTeleFax)
-    .input("TercerosCelular", sql.NVarChar, req.body.TercerosCelular)
-    .input("TercerosDireccion", sql.NVarChar, req.body.TercerosDireccion)
-    .input("TercerosEmail", sql.NVarChar, req.body.TercerosEmail)
-    .input("TercerosFechaIngreso", sql.Date, req.body.TercerosFechaIngreso)
-    .input("TercerosContadoCredito", sql.Numeric, req.body.TercerosContadoCredito)
-    .input("TercerosEstablecimiento", sql.NVarChar, req.body.TercerosEstablecimiento)
-    .input("TercerosCupoCredito", sql.Money, req.body.TercerosCupoCredito)
-    .input("TercerosDiasCredito", sql.Numeric, req.body.TercerosDiasCredito)
+    .input("TercerosTipoDoc", sql.Numeric, TercerosTipoDoc)
+    .input("TercerosIdentificacion", sql.NVarChar, TercerosIdentificacion)
+    .input("TercerosDv", sql.Char, TercerosDv)
+    .input("TercerosPrimerNombre", sql.NVarChar, TercerosPrimerNombre)
+    .input("TercerosSegundoNombre", sql.NVarChar, TercerosSegundoNombre)
+    .input("TercerosPrimerApellido", sql.NVarChar, TercerosPrimerApellido)
+    .input("TercerosSegundoApellido", sql.NVarChar, TercerosSegundoApellido)
+    .input("TercerosRazonSocial", sql.NVarChar, TercerosRazonSocial)
+    .input("TercerosNombres", sql.NVarChar, TercerosNombres)
+    .input("CiudadID", sql.Int, CiudadID)
+    .input("TercerosTeleFax", sql.NVarChar, TercerosTeleFax)
+    .input("TercerosCelular", sql.NVarChar, TercerosCelular)
+    .input("TercerosDireccion", sql.NVarChar, TercerosDireccion)
+    .input("TercerosEmail", sql.NVarChar, TercerosEmail)
+    .input("TercerosFechaIngreso", sql.Date, TercerosFechaIngreso)
+    .input("TercerosContadoCredito", sql.Numeric, TercerosContadoCredito)
+    .input("TercerosEstablecimiento", sql.NVarChar, TercerosEstablecimiento)
+    .input("TercerosCupoCredito", sql.Money, TercerosCupoCredito)
+    .input("TercerosDiasCredito", sql.Numeric, TercerosDiasCredito)
+    .input("TipoNegocioID", sql.Numeric, TipoNegocioID)
+    .input("Latitud", sql.Float, Latitud)
+    .input("Longitud", sql.Float, Longitud)
     .query(
-      "UPDATE AdmTerceros SET TercerosTipoDoc=@TercerosTipoDoc,TercerosIdentificacion=@TercerosIdentificacion,TercerosDv=@TercerosDv,TercerosPrimerNombre=@TercerosPrimerNombre,TercerosSegundoNombre=@TercerosSegundoNombre,TercerosPrimerApellido=@TercerosPrimerApellido,TercerosSegundoApellido=@TercerosSegundoApellido,TercerosRazonSocial=@TercerosRazonSocial,TercerosNombres=@TercerosNombres,CiudadID=@CiudadID,TercerosTeleFax=@TercerosTeleFax,TercerosCelular=@TercerosCelular,TercerosDireccion=@TercerosDireccion,TercerosEmail=@TercerosEmail,TercerosCliente=1,TercerosProveedor=0,TercerosEntidadOficial=0,TercerosEmpleado=0,TercerosActivosFijos=0,TercerosFechaIngreso=@TercerosFechaIngreso,TercerosReteFuente=0,TercerosReteIca=0,TercerosBaseReteFuente=0,TercerosBaseReteIca=0,TercerosReteIva=0,TercerosBaseReteIva=0,TercerosSimplificado=0,TercerosContadoCredito=@TercerosContadoCredito,TercerosEstablecimiento=@TercerosEstablecimiento,TercerosCupoCredito=@TercerosCupoCredito,TercerosDiasCredito=@TercerosDiasCredito,TercerosCarteraVencida=1,TercerosEmpleadoActivo=0,TercerosEmpleadoRetirado=0,TercerosDireccionAlterna='',TercerosCodigoAlterno='',TercerosRepresentanteLegal='',TercerosLibretaMilitar='',TercerosClaseLibreta=0,TercerosTipoCuenta=0,TercerosNumeroCuenta='',TercerosSueldoBasico=0,TercerosAuxilioTransporte=0,TercerosObservaciones='' WHERE TercerosID=@TercerosID"
+      "UPDATE AdmTerceros SET TercerosTipoDoc=@TercerosTipoDoc,TercerosIdentificacion=@TercerosIdentificacion,TercerosDv=@TercerosDv,TercerosPrimerNombre=@TercerosPrimerNombre,TercerosSegundoNombre=@TercerosSegundoNombre,TercerosPrimerApellido=@TercerosPrimerApellido,TercerosSegundoApellido=@TercerosSegundoApellido,TercerosRazonSocial=@TercerosRazonSocial,TercerosNombres=@TercerosNombres,CiudadID=@CiudadID,TercerosTeleFax=@TercerosTeleFax,TercerosCelular=@TercerosCelular,TercerosDireccion=@TercerosDireccion,TercerosEmail=@TercerosEmail,TercerosCliente=1,TercerosProveedor=0,TercerosEntidadOficial=0,TercerosEmpleado=0,TercerosActivosFijos=0,TercerosFechaIngreso=@TercerosFechaIngreso,TercerosReteFuente=0,TercerosReteIca=0,TercerosBaseReteFuente=0,TercerosBaseReteIca=0,TercerosReteIva=0,TercerosBaseReteIva=0,TercerosSimplificado=0,TercerosContadoCredito=@TercerosContadoCredito,TercerosEstablecimiento=@TercerosEstablecimiento,TercerosCupoCredito=@TercerosCupoCredito,TercerosDiasCredito=@TercerosDiasCredito,TercerosCarteraVencida=1,TercerosEmpleadoActivo=0,TercerosEmpleadoRetirado=0,TercerosDireccionAlterna='',TercerosCodigoAlterno='',TercerosRepresentanteLegal='',TercerosLibretaMilitar='',TercerosClaseLibreta=0,TercerosTipoCuenta=0,TercerosNumeroCuenta='',TercerosSueldoBasico=0,TercerosAuxilioTransporte=0,TercerosObservaciones='', TipoNegocioID=@TipoNegocioID, Latitud=@Latitud, Longitud=@Longitud WHERE TercerosID=@TercerosID"
     );
 
     console.log(result)
