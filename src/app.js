@@ -8,9 +8,22 @@ import cityRoutes from './routes/city.routes.js'
 import latlonRoutes from './routes/latlon.routes.js'
 import login from './routes/seller.routes.js'
 import verifyToken from './routes/seller.routes.js'
+import cors from 'cors';
+
 
 const app = express()
+
+
+app.use(cors({
+    origin: '*', // En desarrollo puedes usar '*' para permitir cualquier origen
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
+
+
+
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 app.use(productRoutes)
 app.use(customerRoutes)
 app.use(businessRoutes)
