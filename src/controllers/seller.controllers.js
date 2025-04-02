@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 export const login = async (req, res) => {
-  const { codigo_vendedor, clave } = req.body;
+  const { VendedorCodigo, Clave } = req.body;
 
   // Validación básica del input
-  if (!codigo_vendedor || !clave) {
+  if (!VendedorCodigo || !Clave) {
     return res.status(400).json({ 
       success: false,
       message: 'Código vendedor y contraseña son requeridos'
@@ -30,7 +30,7 @@ export const login = async (req, res) => {
           Activo,
           Cedula
         FROM AdmVendedor 
-        WHERE VendedorCodigo = @VendedorCodigo
+        WHERE VendedorCodigo = @Vendedor_Codigo
       `);
 
     // 2. Verificar si el usuario existe
@@ -54,7 +54,7 @@ export const login = async (req, res) => {
     // 4. Verificar la contraseña
     // Nota: Esto asume que estás almacenando las contraseñas con hash usando bcrypt
     // Si no es así, deberás adaptar esta parte según tu método de almacenamiento
-    const passwordMatch = await bcrypt.compare(clave, user.Clave);
+    const passwordMatch = await bcrypt.compare(Clave, user.Clave);
     
     // Si no usas bcrypt, puedes hacer una comparación directa (no recomendado para producción)
     // const passwordMatch = (clave === user.Clave);
