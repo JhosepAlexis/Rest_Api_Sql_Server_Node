@@ -15,6 +15,4 @@ app.use(businessRoutes)
 app.use(cityRoutes)
 app.use(latlonRoutes)
 
-
-
 export default app
