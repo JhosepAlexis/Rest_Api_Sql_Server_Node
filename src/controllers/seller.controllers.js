@@ -20,7 +20,7 @@ export const login = async (req, res) => {
     // 1. Buscar usuario por código de vendedor
     const result = await pool
       .request()
-      .input('vendedor_codigo', sql.NVarChar, VendedorCodigo)
+      .input('VendedorCodigo', sql.NVarChar, VendedorCodigo)
       .query(`
         SELECT 
           VendedorID,
@@ -30,7 +30,7 @@ export const login = async (req, res) => {
           Activo,
           Cedula
         FROM AdmVendedor 
-        WHERE VendedorCodigo = @vendedor_codigo
+        WHERE VendedorCodigo = @VendedorCodigo
       `);
 
     // 2. Verificar si el usuario existe
