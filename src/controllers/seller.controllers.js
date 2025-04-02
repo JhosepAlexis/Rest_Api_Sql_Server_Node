@@ -30,7 +30,7 @@ export const login = async (req, res) => {
           Activo,
           Cedula
         FROM AdmVendedor 
-        WHERE VendedorCodigo = @Vendedor_Codigo
+        WHERE VendedorCodigo = @vendedor_Codigo
       `);
 
     // 2. Verificar si el usuario existe
@@ -48,6 +48,7 @@ export const login = async (req, res) => {
       return res.status(403).json({
         success: false,
         message: 'Cuenta desactivada. Contacte al administrador'
+
       });
     }
     
