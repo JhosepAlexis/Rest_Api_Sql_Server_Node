@@ -44,7 +44,7 @@ export const login = async (req, res) => {
     const user = result.recordset[0];
     
     // 3. Verificar si la cuenta está activa
-    if (!user.Activo !=0) {
+    if (!user.Activo !== 0) {
       return res.status(403).json({
         success: false,
         message: 'Cuenta desactivada. Contacte al administrador'
