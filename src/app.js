@@ -16,10 +16,10 @@ const app = express()
 
 
 app.use(cors({
-    origin: '*', // En desarrollo puedes usar '*' para permitir cualquier origen
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
+  origin: ['http://localhost:3000', 'https://tu-dominio-de-produccion.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
