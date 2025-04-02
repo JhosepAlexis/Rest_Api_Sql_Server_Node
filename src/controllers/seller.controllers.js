@@ -1,6 +1,7 @@
-// En tu customer.controllers.js
 import { getConnection } from "../databases/connection.js";
 import sql from "mssql";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const login = async (req, res) => {
   const { codigo_vendedor, clave } = req.body;
@@ -9,22 +10,23 @@ export const login = async (req, res) => {
   if (!codigo_vendedor || !clave) {
     return res.status(400).json({ 
       success: false,
-      message: 'codigo vendedor y contraseña son requeridos'
+      message: 'Código vendedor y contraseña son requeridos'
     });
   }
 
   try {
     const pool = await getConnection();
     
-    // 1. Buscar usuario por email
+    // 1. Buscar usuario por código de vendedor
     const result = await pool
       .request()
-      .input('vendedor_codigo', sql.NVarChar, codigo_vendedor)
+      .input('vendedor_codigo', sql.NVarChar, VendedorCodigo)
       .query(`
         SELECT 
           VendedorID,
           VendedorCodigo,
           VendedorNombre,
+          Clave,
           Activo,
           Cedula
         FROM AdmVendedor 
@@ -48,51 +50,67 @@ export const login = async (req, res) => {
         message: 'Cuenta desactivada. Contacte al administrador'
       });
     }
-
-    // // 4. Verificar contraseña con bcrypt
-    // const passwordMatch = await bcrypt.compare(clave, user.Clave);
-    // if (!passwordMatch) {
-    //   return res.status(401).json({ 
-    //     success: false,
-    //     message: 'Credenciales inválidas'
-    //   });
-    // }
-
-    // // 5. Generar token JWT
-    // const tokenPayload = {
-    //   id: user.VendedorID,
-    //   codigo_vendedor: user.VendedorCodigo
-    // //   rol: user.VendedorRol
-    // };
-
-    // const token = jwt.sign(
-    //   tokenPayload,
-    //   config.JWT_SECRET,
-    //   { expiresIn: '8h' } // Token expira en 8 horas
-    // );
-
-    // 6. Preparar respuesta sin datos sensibles
-    const userResponse = {
-      id: user.VendedorID,
-      nombre: user.VendedorNombre,
-      codigo_vendedor: user.VendedorCodigo
-    //   rol: user.VendedorRol
-    };
-
-    // 7. Enviar respuesta exitosa
-    res.json({
+    
+    // 4. Verificar la contraseña
+    // Nota: Esto asume que estás almacenando las contraseñas con hash usando bcrypt
+    // Si no es así, deberás adaptar esta parte según tu método de almacenamiento
+    const passwordMatch = await bcrypt.compare(clave, user.Clave);
+    
+    // Si no usas bcrypt, puedes hacer una comparación directa (no recomendado para producción)
+    // const passwordMatch = (clave === user.Clave);
+    
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciales inválidas'
+      });
+    }
+    
+    // 5. Generar JWT para autenticación
+    const token = jwt.sign(
+      { 
+        id: user.VendedorID,
+        codigo: user.VendedorCodigo,
+        nombre: user.VendedorNombre
+      }, 
+      process.env.JWT_SECRET || 'tu_clave_secreta', 
+      { expiresIn: '8h' }
+    );
+    
+    // 6. Enviar respuesta exitosa
+    return res.status(200).json({
       success: true,
-      message: 'Autenticación exitosa',
-    //   token,
-      user: userResponse
+      message: 'Login exitoso',
+      user: {
+        id: user.VendedorID,
+        codigo: user.VendedorCodigo,
+        nombre: user.VendedorNombre,
+        cedula: user.Cedula
+      },
+      token
     });
-
   } catch (error) {
     console.error('Error en login:', error);
     res.status(500).json({ 
       success: false,
       message: 'Error en el servidor',
-      error: 'error'
+      error: error.message
+    });
+  }
+};
+
+// Opcional: Endpoint para verificar si el token es válido
+export const verifyToken = async (req, res) => {
+  try {
+    // El middleware de autenticación ya habrá verificado el token
+    res.status(200).json({
+      success: true,
+      user: req.user // Asumiendo que tienes un middleware que establece req.user
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: 'Token inválido o expirado'
     });
   }
 };
