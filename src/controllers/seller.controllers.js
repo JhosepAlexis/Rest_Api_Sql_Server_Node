@@ -34,7 +34,7 @@ export const login = async (req, res) => {
       `);
 
     // 2. Verificar si el usuario existe
-    if (result.recordset.length === 0) {
+    if (result.recordset.length === 1) {
       return res.status(401).json({ 
         success: false,
         message: 'Credenciales inválidas' // Mensaje genérico por seguridad
