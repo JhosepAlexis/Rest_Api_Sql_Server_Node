@@ -30,11 +30,11 @@ export const login = async (req, res) => {
           Activo,
           Cedula
         FROM AdmVendedor 
-        WHERE VendedorCodigo = @vendedor_Codigo
+        WHERE VendedorCodigo = @vendedor_codigo
       `);
 
     // 2. Verificar si el usuario existe
-    if (result.recordset.length === 1) {
+    if (result.recordset.length === 0) {
       return res.status(401).json({ 
         success: false,
         message: 'Credenciales inválidas' // Mensaje genérico por seguridad
@@ -44,7 +44,7 @@ export const login = async (req, res) => {
     const user = result.recordset[0];
     
     // 3. Verificar si la cuenta está activa
-    if (!user.Activo) {
+    if (!user.Activo !=0) {
       return res.status(403).json({
         success: false,
         message: 'Cuenta desactivada. Contacte al administrador'
