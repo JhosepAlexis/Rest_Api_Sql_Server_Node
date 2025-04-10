@@ -5,6 +5,6 @@ import {
 
 const router = Router();
 
-router.get("/listadoclientesvendedor", getCustomerListSeller);
+router.get("/listadoclientesvendedor/:VendedorID", getCustomerListSeller);
 
 export default router;   
