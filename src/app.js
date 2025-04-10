@@ -8,6 +8,7 @@ import businessRoutes from './routes/businesstype.routes.js'
 import cityRoutes from './routes/city.routes.js'
 import customerListSeller from './routes/customerlistseller.routes.js'
 import customerListRout from './routes/customerlistrout.routes.js'
+import ListVendors from './routes/listvendors.routes.js'
 import login from './routes/seller.routes.js'
 import verifyToken from './routes/seller.routes.js'
 import dotenv from 'dotenv';
@@ -30,6 +31,7 @@ app.use(businessRoutes)
 app.use(cityRoutes)
 app.use(customerListSeller)
 app.use(customerListRout)
+app.use(ListVendors)
 app.use(login)
 app.use(verifyToken)
 
