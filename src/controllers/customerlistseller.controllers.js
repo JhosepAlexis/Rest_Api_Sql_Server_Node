@@ -1,4 +1,6 @@
 import { getConnection } from "../databases/connection.js";
+import sql from "mssql";
+
 
 export const getCustomerListSeller = async (req, res) => {
   const { VendedorID } = req.body;
