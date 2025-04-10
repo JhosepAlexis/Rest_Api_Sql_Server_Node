@@ -3,7 +3,7 @@ import sql from "mssql";
 
 
 export const getCustomerListSeller = async (req, res) => {
-  const { VendedorID } = req.body;
+  const { VendedorID } = req.query;
   const pool = await getConnection();
   const result = await pool
   .request()
