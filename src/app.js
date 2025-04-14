@@ -18,7 +18,7 @@ const app = express()
 
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://tu-dominio-de-produccion.com'],
+  origin: ['http://localhost:3000', 'https://hermarly.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
