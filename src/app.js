@@ -18,7 +18,7 @@ const app = express()
 
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://geovendedor.hermarly.com'],
+  origin: ['http://localhost:3000', 'https://hermarly.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
