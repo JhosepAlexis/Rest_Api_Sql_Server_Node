@@ -28,7 +28,8 @@ export const login = async (req, res) => {
           VendedorNombre,
           Clave,
           Activo,
-          Cedula
+          Cedula,
+          Rol
         FROM AdmVendedor 
         WHERE VendedorCodigo = @VendedorCodigo
       `);
@@ -86,7 +87,8 @@ export const login = async (req, res) => {
         id: user.VendedorID,
         codigo: user.VendedorCodigo,
         nombre: user.VendedorNombre,
-        cedula: user.Cedula
+        cedula: user.Cedula,
+        rol: user.Rol
       },
       token
     });
