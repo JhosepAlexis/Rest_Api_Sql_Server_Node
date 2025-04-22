@@ -73,7 +73,8 @@ export const login = async (req, res) => {
       { 
         id: user.VendedorID,
         codigo: user.VendedorCodigo,
-        nombre: user.VendedorNombre
+        nombre: user.VendedorNombre,
+        rol: user.Rol
       }, 
       process.env.JWT_SECRET || 'tu_clave_secreta', 
       { expiresIn: '8h' }
