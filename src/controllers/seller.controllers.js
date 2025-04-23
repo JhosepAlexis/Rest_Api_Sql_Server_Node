@@ -66,7 +66,7 @@ export const login = async (req, res) => {
     // const passwordMatch = await bcrypt.compare(Clave, user.Clave);
     
     // Si no usas bcrypt, puedes hacer una comparación directa (no recomendado para producción)
-    const passwordMatch = (clave === user.Clave);
+    const passwordMatch = (Clave === user.Clave);
     
     if (!passwordMatch) {
       return res.status(401).json({
