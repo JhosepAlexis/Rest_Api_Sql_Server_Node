@@ -15,9 +15,12 @@ export const login = async (req, res) => {
   }
 
   try {
+    console.log('Intentando conectar a la base de datos...');
     const pool = await getConnection();
+    console.log('Conexión a BD establecida');
     
     // 1. Buscar usuario por código de vendedor
+    console.log(`Buscando usuario: ${VendedorCodigo}`);
     const result = await pool
       .request()
       .input('VendedorCodigo', sql.NVarChar, VendedorCodigo)
@@ -34,8 +37,11 @@ export const login = async (req, res) => {
         WHERE VendedorCodigo = @VendedorCodigo
       `);
 
+    console.log('Resultado de la consulta:', result.recordset);
+
     // 2. Verificar si el usuario existe
     if (result.recordset.length === 0) {
+      console.log('Usuario no encontrado');
       return res.status(401).json({ 
         success: false,
         message: 'Credenciales inválidas' // Mensaje genérico por seguridad
@@ -43,6 +49,7 @@ export const login = async (req, res) => {
     }
 
     const user = result.recordset[0];
+    console.log('Usuario encontrado:', user);
     
     // 3. Verificar si la cuenta está activa
     if (user.Activo !== 0) {
@@ -53,9 +60,11 @@ export const login = async (req, res) => {
       });
     }
 
+    console.log('Comparando contraseñas...');
     const passwordMatch = (Clave === user.Clave);
     
     if (!passwordMatch) {
+      console.log('Contraseña no coincide');
       return res.status(401).json({
         success: false,
         message: 'Credenciales inválidas'
@@ -63,6 +72,7 @@ export const login = async (req, res) => {
     }
     
     // 5. Generar JWT para autenticación
+    console.log('Generando token JWT...');
     const token = jwt.sign(
       { 
         id: user.VendedorID,
@@ -75,6 +85,7 @@ export const login = async (req, res) => {
     );
     
     // 6. Enviar respuesta exitosa
+    console.log('Login exitoso');
     return res.status(200).json({
       success: true,
       message: 'Login exitoso',
@@ -92,7 +103,8 @@ export const login = async (req, res) => {
     res.status(500).json({ 
       success: false,
       message: 'Error en el servidor',
-      error: error.message
+      error: error.message,
+      stack: error.stack
     });
   }
 };
