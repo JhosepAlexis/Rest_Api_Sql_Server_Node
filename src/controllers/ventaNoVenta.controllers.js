@@ -13,7 +13,7 @@ export const createVenta = async (req, res) => {
     .input("Latitud", sql.Float, req.body.Latitud)
     .input("Longitud", sql.Float, req.body.Longitud)
     .query(
-      "INSERT INTO InvNo_Venta_Pedidos (VendedorID,TercerosID,Fecha,Detalle,Hora,Longitud,Latitud,Sucursales) VALUES(VendedorID=@VendedorID,TercerosID=@TercerosID,Fecha=@Fecha,Detalle='',Hora=@Hora,Longitud=@Longitud,Latitud=@Latitud,Sucursales=0); SELECT SCOPE_IDENTITY() AS ID;"
+      "INSERT INTO InvNo_Venta_Pedidos (VendedorID,TercerosID,Fecha,Detalle,Hora,Longitud,Latitud,Sucursales) VALUES(@VendedorID,@TercerosID,@Fecha,'',@Hora,@Longitud,@Latitud,0); SELECT SCOPE_IDENTITY() AS ID;"
     );
 
   console.log(result);
@@ -38,7 +38,7 @@ export const createNoVenta = async (req, res) => {
     .input("Latitud", sql.Float, req.body.Latitud)
     .input("Longitud", sql.Float, req.body.Longitud)
     .query(
-      "INSERT INTO InvNo_Venta_Pedidos (VendedorID,TercerosID,Fecha,Detalle,Hora,Longitud,Latitud,Sucursales) VALUES(VendedorID=@VendedorID,TercerosID=@TercerosID,Fecha=@Fecha,Detalle=@Detalle,Hora=@Hora,Longitud=@Longitud,Latitud=@Latitud,Sucursales=0); SELECT SCOPE_IDENTITY() AS ID;"
+      "INSERT INTO InvNo_Venta_Pedidos (VendedorID,TercerosID,Fecha,Detalle,Hora,Longitud,Latitud,Sucursales) VALUES(@VendedorID,@TercerosID,@Fecha,@Detalle,@Hora,@Longitud,@Latitud,0); SELECT SCOPE_IDENTITY() AS ID;"
     );
 
   console.log(result);
