@@ -12,6 +12,8 @@ import ListVendors from './routes/listvendors.routes.js'
 import login from './routes/seller.routes.js'
 import verifyToken from './routes/seller.routes.js'
 import dotenv from 'dotenv';
+import ventaNoVenta from './routes/ventaNoVenta.routes.js'
+
 dotenv.config();
 
 const app = express()
@@ -34,6 +36,7 @@ app.use(customerListRout)
 app.use(ListVendors)
 app.use(login)
 app.use(verifyToken)
+app.use(ventaNoVenta)
 
 
 export default app
