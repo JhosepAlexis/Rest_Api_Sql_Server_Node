@@ -7,6 +7,6 @@ export const getCustomerListRout = async (req, res) => {
   const result = await pool.request()
   .input('VendedorID', sql.Int, VendedorID)
   .input('Dia', sql.NVarChar, Dia)
-  .query("SELECT RUT.Cedula, RUT.TercerosNombres, RUT.Direccion, 'home' as type, TER.Latitud, TER.Longitud FROM RuteroVendedores RUT INNER JOIN AdmTerceros TER ON TER.TercerosID=RUT.TercerosID WHERE RUT.VendedorID=@VendedorID AND RUT.Dia=@Dia");
+  .query("SELECT RUT.TercerosID, RUT.Cedula, RUT.TercerosNombres, RUT.Direccion, 'home' as type, TER.Latitud, TER.Longitud FROM RuteroVendedores RUT INNER JOIN AdmTerceros TER ON TER.TercerosID=RUT.TercerosID WHERE RUT.VendedorID=@VendedorID AND RUT.Dia=@Dia");
   res.json(result.recordset);
 };
