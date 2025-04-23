@@ -52,20 +52,7 @@ export const login = async (req, res) => {
 
       });
     }
-    
-    // if (Clave !== user.Clave) {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: 'Credenciales inválidas'
-    //   });
-    // }
 
-    // 4. Verificar la contraseña
-    // Nota: Esto asume que estás almacenando las contraseñas con hash usando bcrypt
-    // Si no es así, deberás adaptar esta parte según tu método de almacenamiento
-    // const passwordMatch = await bcrypt.compare(Clave, user.Clave);
-    
-    // Si no usas bcrypt, puedes hacer una comparación directa (no recomendado para producción)
     const passwordMatch = (Clave === user.Clave);
     
     if (!passwordMatch) {
