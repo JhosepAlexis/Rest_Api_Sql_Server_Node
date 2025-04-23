@@ -45,7 +45,7 @@ export const login = async (req, res) => {
     const user = result.recordset[0];
     
     // 3. Verificar si la cuenta está activa
-    if (user.Activo !== 1) {
+    if (user.Activo !== 0) {
       return res.status(403).json({
         success: false,
         message: 'Cuenta desactivada. Contacte al administrador'
@@ -59,7 +59,7 @@ export const login = async (req, res) => {
         message: 'Credenciales inválidas'
       });
     }
-    
+
     // 4. Verificar la contraseña
     // Nota: Esto asume que estás almacenando las contraseñas con hash usando bcrypt
     // Si no es así, deberás adaptar esta parte según tu método de almacenamiento
