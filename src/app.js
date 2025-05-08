@@ -20,7 +20,7 @@ const app = express()
 
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://hermarly.com', 'https://carloscarvajal.info'],
+  origin: ['http://localhost:3000', 'https://hermarly.com', 'https://carloscarvajal.info', 'https://carloscalvajal.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
