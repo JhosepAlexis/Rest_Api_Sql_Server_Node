@@ -2,70 +2,91 @@ import { getConnection } from "../databases/connection.js";
 import sql from "mssql";
 
 export const getCustomers = async (req, res) => {
-  const pool = await getConnection();
-  const result = await pool.request().query("SELECT * FROM AdmTerceros");
-  res.json(result.recordset);
+  try {
+    const pool = await getConnection(req.tenantId);
+    const result = await pool.request().query("SELECT * FROM AdmTerceros");
+    res.json(result.recordset);
+  }catch (error) {
+    res.status(500).json({ 
+      error: error.message,
+      tenantId: req.tenantId
+    });
+  }
 };
 
 export const getCustomerByIdentification = async (req, res) => {
-  const { cedula } = req.params;
-  const pool = await getConnection();
-  const result = await pool
-    .request()
-    .input("cedula", sql.NVarChar, cedula)
-    .query(`
-      SELECT * FROM AdmTerceros 
-      WHERE TercerosIdentificacion = @cedula
-    `);
-    
-  res.json(result.recordset[0] || {});
+  try {
+    const { cedula } = req.params;
+    const pool = await getConnection(req.tenantId);
+    const result = await pool
+      .request()
+      .input("cedula", sql.NVarChar, cedula)
+      .query(`
+        SELECT * FROM AdmTerceros 
+        WHERE TercerosIdentificacion = @cedula
+      `);
+      
+    res.json(result.recordset[0] || {});
+  }catch (error) {
+    res.status(500).json({ 
+      error: error.message,
+      tenantId: req.tenantId
+    });
+  }
 };
 
 export const createCustomer = async (req, res) => {
-  console.log(req.body);
-  const pool = await getConnection();
-  const result = await pool
-    .request()
-    .input("TercerosTipoDoc", sql.Numeric, req.body.TercerosTipoDoc)
-    .input("TercerosIdentificacion", sql.NVarChar, req.body.TercerosIdentificacion)
-    .input("TercerosDv", sql.Char, req.body.TercerosDv)
-    .input("TercerosPrimerNombre", sql.NVarChar, req.body.TercerosPrimerNombre)
-    .input("TercerosSegundoNombre", sql.NVarChar, req.body.TercerosSegundoNombre)
-    .input("TercerosPrimerApellido", sql.NVarChar, req.body.TercerosPrimerApellido)
-    .input("TercerosSegundoApellido", sql.NVarChar, req.body.TercerosSegundoApellido)
-    .input("TercerosRazonSocial", sql.NVarChar, req.body.TercerosRazonSocial)
-    .input("TercerosNombres", sql.NVarChar, req.body.TercerosNombres)
-    .input("CiudadID", sql.Int, req.body.CiudadID)
-    .input("TercerosTeleFax", sql.NVarChar, req.body.TercerosTeleFax)
-    .input("TercerosCelular", sql.NVarChar, req.body.TercerosCelular)
-    .input("TercerosDireccion", sql.NVarChar, req.body.TercerosDireccion)
-    .input("TercerosEmail", sql.NVarChar, req.body.TercerosEmail)
-    .input("TercerosFechaIngreso", sql.Date, req.body.TercerosFechaIngreso)
-    .input("TercerosContadoCredito", sql.Numeric, req.body.TercerosContadoCredito)
-    .input("TercerosEstablecimiento", sql.NVarChar, req.body.TercerosEstablecimiento)
-    .input("TercerosCupoCredito", sql.Money, req.body.TercerosCupoCredito)
-    .input("TercerosDiasCredito", sql.Numeric, req.body.TercerosDiasCredito)
-    .input("TipoNegocioID", sql.Numeric, req.body.TipoNegocioID)
-    .input("Latitud", sql.Float, req.body.Latitud)
-    .input("Longitud", sql.Float, req.body.Longitud)
-    .input("VendedorID", sql.Int, req.body.VendedorID)
-    .query(
-      "INSERT INTO AdmTerceros (TercerosTipoDoc,TercerosIdentificacion,TercerosDv,TercerosPrimerNombre,TercerosSegundoNombre,TercerosPrimerApellido,TercerosSegundoApellido,TercerosRazonSocial,TercerosNombres,CiudadID,TercerosTeleFax,TercerosCelular,TercerosDireccion,TercerosEmail,TercerosCliente,TercerosProveedor,TercerosEntidadOficial,TercerosEmpleado,TercerosActivosFijos,TercerosFechaIngreso,TercerosReteFuente,TercerosReteIca,TercerosBaseReteFuente,TercerosBaseReteIca,TercerosReteIva,TercerosBaseReteIva,TercerosSimplificado,TercerosContadoCredito,TercerosEstablecimiento,TercerosCupoCredito,TercerosDiasCredito,TercerosCarteraVencida,TercerosEmpleadoActivo,TercerosEmpleadoRetirado,TercerosDireccionAlterna,TercerosCodigoAlterno,TercerosRepresentanteLegal,TercerosLibretaMilitar,TercerosClaseLibreta,TercerosTipoCuenta,TercerosNumeroCuenta,TercerosSueldoBasico,TercerosAuxilioTransporte,TercerosObservaciones, TipoNegocioID, Latitud, Longitud, VendedorID) VALUES(@TercerosTipoDoc,@TercerosIdentificacion,@TercerosDv,@TercerosPrimerNombre,@TercerosSegundoNombre,@TercerosPrimerApellido,@TercerosSegundoApellido,@TercerosRazonSocial,@TercerosNombres,@CiudadID,@TercerosTeleFax,@TercerosCelular,@TercerosDireccion,@TercerosEmail,1,0,0,0,0,@TercerosFechaIngreso,0,0,0,0,0,0,0,@TercerosContadoCredito,@TercerosEstablecimiento,@TercerosCupoCredito,@TercerosDiasCredito,1,0,0,'','','','',0,0,'',0,0,'', @TipoNegocioID, @Latitud, @Longitud, @VendedorID); SELECT SCOPE_IDENTITY() AS TercerosID;"
-    );
+  try {
+    console.log(req.body);
+    const pool = await getConnection(req.tenantId);
+    const result = await pool
+      .request()
+      .input("TercerosTipoDoc", sql.Numeric, req.body.TercerosTipoDoc)
+      .input("TercerosIdentificacion", sql.NVarChar, req.body.TercerosIdentificacion)
+      .input("TercerosDv", sql.Char, req.body.TercerosDv)
+      .input("TercerosPrimerNombre", sql.NVarChar, req.body.TercerosPrimerNombre)
+      .input("TercerosSegundoNombre", sql.NVarChar, req.body.TercerosSegundoNombre)
+      .input("TercerosPrimerApellido", sql.NVarChar, req.body.TercerosPrimerApellido)
+      .input("TercerosSegundoApellido", sql.NVarChar, req.body.TercerosSegundoApellido)
+      .input("TercerosRazonSocial", sql.NVarChar, req.body.TercerosRazonSocial)
+      .input("TercerosNombres", sql.NVarChar, req.body.TercerosNombres)
+      .input("CiudadID", sql.Int, req.body.CiudadID)
+      .input("TercerosTeleFax", sql.NVarChar, req.body.TercerosTeleFax)
+      .input("TercerosCelular", sql.NVarChar, req.body.TercerosCelular)
+      .input("TercerosDireccion", sql.NVarChar, req.body.TercerosDireccion)
+      .input("TercerosEmail", sql.NVarChar, req.body.TercerosEmail)
+      .input("TercerosFechaIngreso", sql.Date, req.body.TercerosFechaIngreso)
+      .input("TercerosContadoCredito", sql.Numeric, req.body.TercerosContadoCredito)
+      .input("TercerosEstablecimiento", sql.NVarChar, req.body.TercerosEstablecimiento)
+      .input("TercerosCupoCredito", sql.Money, req.body.TercerosCupoCredito)
+      .input("TercerosDiasCredito", sql.Numeric, req.body.TercerosDiasCredito)
+      .input("TipoNegocioID", sql.Numeric, req.body.TipoNegocioID)
+      .input("Latitud", sql.Float, req.body.Latitud)
+      .input("Longitud", sql.Float, req.body.Longitud)
+      .input("VendedorID", sql.Int, req.body.VendedorID)
+      .query(
+        "INSERT INTO AdmTerceros (TercerosTipoDoc,TercerosIdentificacion,TercerosDv,TercerosPrimerNombre,TercerosSegundoNombre,TercerosPrimerApellido,TercerosSegundoApellido,TercerosRazonSocial,TercerosNombres,CiudadID,TercerosTeleFax,TercerosCelular,TercerosDireccion,TercerosEmail,TercerosCliente,TercerosProveedor,TercerosEntidadOficial,TercerosEmpleado,TercerosActivosFijos,TercerosFechaIngreso,TercerosReteFuente,TercerosReteIca,TercerosBaseReteFuente,TercerosBaseReteIca,TercerosReteIva,TercerosBaseReteIva,TercerosSimplificado,TercerosContadoCredito,TercerosEstablecimiento,TercerosCupoCredito,TercerosDiasCredito,TercerosCarteraVencida,TercerosEmpleadoActivo,TercerosEmpleadoRetirado,TercerosDireccionAlterna,TercerosCodigoAlterno,TercerosRepresentanteLegal,TercerosLibretaMilitar,TercerosClaseLibreta,TercerosTipoCuenta,TercerosNumeroCuenta,TercerosSueldoBasico,TercerosAuxilioTransporte,TercerosObservaciones, TipoNegocioID, Latitud, Longitud, VendedorID) VALUES(@TercerosTipoDoc,@TercerosIdentificacion,@TercerosDv,@TercerosPrimerNombre,@TercerosSegundoNombre,@TercerosPrimerApellido,@TercerosSegundoApellido,@TercerosRazonSocial,@TercerosNombres,@CiudadID,@TercerosTeleFax,@TercerosCelular,@TercerosDireccion,@TercerosEmail,1,0,0,0,0,@TercerosFechaIngreso,0,0,0,0,0,0,0,@TercerosContadoCredito,@TercerosEstablecimiento,@TercerosCupoCredito,@TercerosDiasCredito,1,0,0,'','','','',0,0,'',0,0,'', @TipoNegocioID, @Latitud, @Longitud, @VendedorID); SELECT SCOPE_IDENTITY() AS TercerosID;"
+      );
 
-  console.log(result);
-  res.json({
-    TercerosID: result.recordset[0].TercerosID,
-    TercerosIdentificacion: req.body.TercerosIdentificacion,
-    TercerosPrimerNombre: req.body.TercerosPrimerNombre,
-    TercerosPrimerApellido: req.body.TercerosPrimerApellido,
-  });
+    console.log(result);
+    res.json({
+      TercerosID: result.recordset[0].TercerosID,
+      TercerosIdentificacion: req.body.TercerosIdentificacion,
+      TercerosPrimerNombre: req.body.TercerosPrimerNombre,
+      TercerosPrimerApellido: req.body.TercerosPrimerApellido,
+    });
+  }catch (error) {
+    res.status(500).json({ 
+      error: error.message,
+      tenantId: req.tenantId
+    });
+  }
 };
 
 export const updateCustomer = async (req, res) => {
   const { TercerosID } = req.params; 
   try{
-    const pool = await getConnection()
+    const pool = await getConnection(req.tenantId)
     const result = await pool
     .request()
     .input("TercerosID", sql.Int, TercerosID)
@@ -100,14 +121,14 @@ export const updateCustomer = async (req, res) => {
     }
     res.json({message: "Customer updated"})
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message, tenantId: req.tenantId });
   }
 
 };
 
 export const deleteCustomer = async (req, res) => {
-
-    const pool = await getConnection()
+  try {
+    const pool = await getConnection(req.tenantId)
     const result = await pool.request()
     .input("TercerosID", sql.Int, req.params.TercerosID)
     .query("DELETE FROM AdmTerceros WHERE TercerosID=@TercerosID")
@@ -119,4 +140,11 @@ export const deleteCustomer = async (req, res) => {
     }
 
     return res.json({message: "Customer deleted"})
+  }
+  catch (error) {
+    res.status(500).json({ 
+      error: error.message,
+      tenantId: req.tenantId
+    });
+  }
 };
