@@ -3,7 +3,7 @@
 import express from 'express'
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { tenantMiddleware } from './middleware/tenant.js';
+import { tenantMiddleware } from './middlewares/tenant.js';
 import productRoutes from './routes/products.routes.js'
 import customerRoutes from './routes/customer.routes.js'
 import businessRoutes from './routes/businesstype.routes.js'
