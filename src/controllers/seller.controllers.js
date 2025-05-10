@@ -16,7 +16,7 @@ export const login = async (req, res) => {
 
   try {
     console.log('Intentando conectar a la base de datos...');
-    const pool = await getConnection();
+    const pool = await getConnection(req.tenantId);
     console.log('Conexión a BD establecida');
     
     // 1. Buscar usuario por código de vendedor
@@ -104,7 +104,8 @@ export const login = async (req, res) => {
       success: false,
       message: 'Error en el servidor',
       error: error.message,
-      stack: error.stack
+      stack: error.stack,
+      tenantId: req.tenantId
     });
   }
 };
